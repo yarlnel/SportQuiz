@@ -33,7 +33,8 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        router.navigateTo(Screens.Cloaka())
+       //  router.navigateTo(Screens.Cloaka())
+        router.navigateTo(Screens.QuizPage(page = 1))
     }
 
 

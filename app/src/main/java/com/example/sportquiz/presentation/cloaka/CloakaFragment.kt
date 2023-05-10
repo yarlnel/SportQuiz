@@ -1,10 +1,9 @@
 package com.example.sportquiz.presentation.cloaka
 
-import android.graphics.Bitmap
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebSettings
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.example.sportquiz.databinding.FragmentCloakaBinding
 import com.example.sportquiz.presentation.common.backpress.BackPressedStrategyOwner
@@ -19,8 +18,10 @@ class CloakaFragment : BaseFragment<FragmentCloakaBinding>(
         setUpWebView()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setUpWebView(): Unit = with(binding.webView) {
-        settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+        settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        settings.javaScriptEnabled = true
         webViewClient = WebViewClient()
         loadFirstPage()
     }
@@ -39,7 +40,8 @@ class CloakaFragment : BaseFragment<FragmentCloakaBinding>(
         if (canGoBack()) {
             goBack()
         } else {
-            ultimateOnBackPressed()
+            requireActivity().finish()
+
         }
     }
 }

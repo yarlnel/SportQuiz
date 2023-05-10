@@ -42,7 +42,8 @@ android {
 def daggerVersion = '2.19'
 
 dependencies {
-
+    implementation 'org.jsoup:jsoup:1.16.1'
+    implementation 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.2'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
