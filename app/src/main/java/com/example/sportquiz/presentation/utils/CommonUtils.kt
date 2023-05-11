@@ -1,10 +1,11 @@
 package com.example.sportquiz.presentation.utils
 
-import android.widget.Button
+
+import android.view.View
 import androidx.annotation.DrawableRes
 import com.example.sportquiz.R
 
-infix fun Button.onclick(voidLambda: () -> Unit) {
+infix fun View.onclick(voidLambda: () -> Unit) {
     setOnClickListener { voidLambda.invoke() }
 }
 

@@ -61,7 +61,6 @@
 "
                 />
         </FrameLayout>
-
     </androidx.cardview.widget.CardView>
 
     <TextView
