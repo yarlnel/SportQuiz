@@ -26,7 +26,7 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        page = arguments?.getInt(Factory.ArgPage) ?: return
+        page = arguments?.getInt(Arg.Page) ?: return
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,12 +85,15 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
         Toast.makeText(requireContext(), "False", Toast.LENGTH_SHORT).show()
     }
 
+    object Arg {
+        const val Page = "arg_page"
+    }
+
     object Factory {
-        const val ArgPage = "arg_page"
 
         fun newInstance(page: Int) = QuizPageFragment().apply {
             arguments = Bundle().apply {
-                putInt(ArgPage, page)
+                putInt(Arg.Page, page)
             }
         }
     }
