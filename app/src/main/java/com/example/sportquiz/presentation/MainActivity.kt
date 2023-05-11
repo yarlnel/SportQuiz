@@ -30,12 +30,13 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Firebase.remoteConfig.fetchAndActivate()
+        val prefs = getPreferences(MODE_PRIVATE)
 
-
-        val url = Firebase.remoteConfig.getString("url")
-
-        Toast.makeText(this, "Url: $url", Toast.LENGTH_LONG).show()
+        var url = prefs.getString(Pref.Url, "")
+        if (url.isNullOrEmpty()) {
+            url = Firebase.remoteConfig.getString("url")
+            prefs.edit().putString(Pref.Url, url).apply()
+        }
 
         if (CloakingUtils.checkIsEmu() || url.isBlank())
             router.navigateTo(Screens.Home())
@@ -68,5 +69,9 @@ class MainActivity : DaggerAppCompatActivity() {
         } else {
             supportFragmentManager.popBackStack()
         }
+    }
+
+    object Pref {
+        const val Url = "coloaka_url"
     }
 }
