@@ -142,7 +142,7 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
         super.onStop()
     }
 
-    object Arg {
+    private object Arg {
         const val Page = "arg_page"
     }
 

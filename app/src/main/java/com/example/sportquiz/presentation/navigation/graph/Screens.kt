@@ -8,8 +8,8 @@ import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 object Screens {
 
-    fun Cloaka() = FragmentScreen {
-        CloakaFragment()
+    fun Cloaka(url: String) = FragmentScreen {
+        CloakaFragment.Factory.newInstance(url)
     }
 
     fun QuizPage(page: Int) = FragmentScreen {

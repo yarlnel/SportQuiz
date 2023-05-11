@@ -13,9 +13,17 @@ class CloakaFragment : BaseFragment<FragmentCloakaBinding>(
     FragmentCloakaBinding::inflate
 ), BackPressedStrategyOwner {
 
+    private lateinit var baseUrl: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        baseUrl = arguments?.getString(Arg.Url) ?: return
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpWebView()
+        loadUrl(baseUrl)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -23,13 +31,6 @@ class CloakaFragment : BaseFragment<FragmentCloakaBinding>(
         settings.cacheMode = WebSettings.LOAD_NO_CACHE
         settings.javaScriptEnabled = true
         webViewClient = WebViewClient()
-        loadFirstPage()
-    }
-
-    private fun loadFirstPage() {
-        // TODO: Add work with config
-        val cloakaHomePageUrl = "https://habr.com/ru/articles/279641"
-        loadUrl(cloakaHomePageUrl)
     }
 
     private fun loadUrl(url: String) {
@@ -42,6 +43,19 @@ class CloakaFragment : BaseFragment<FragmentCloakaBinding>(
         } else {
             requireActivity().finish()
 
+        }
+    }
+
+    private object Arg {
+        const val Url = "arg_url"
+    }
+
+    object Factory {
+
+        fun newInstance(url: String) = CloakaFragment().apply {
+            arguments = Bundle().apply {
+                putString(Arg.Url, url)
+            }
         }
     }
 }

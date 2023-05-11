@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "486193945028",
+    "project_id": "sportquiz-b69da",
+    "storage_bucket": "sportquiz-b69da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486193945028:android:81de64afb27005aa672c91",
+        "android_client_info": {
+          "package_name": "com.example.sportquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486193945028-lc6c3rphospu2cc1rgm75apggcjhc03s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbp7Ject_Cix4Eakc8-er8feWYFNCNBkw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486193945028-lc6c3rphospu2cc1rgm75apggcjhc03s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

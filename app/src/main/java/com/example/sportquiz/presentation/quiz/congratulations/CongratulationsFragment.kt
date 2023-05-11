@@ -74,7 +74,7 @@ class CongratulationsFragment : BaseFragment<FragmentCongratulationsBinding>(
         )
     }
 
-    object Arg {
+    private object Arg {
         const val Page = "arg_page_number"
         const val QuizPerPageCount = "quiz_per_page_count"
         const val QuizRightAnswersCount = "quiz_right_answers_count"

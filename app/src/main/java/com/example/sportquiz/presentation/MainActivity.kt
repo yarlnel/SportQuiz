@@ -1,13 +1,17 @@
 package com.example.sportquiz.presentation
 
 import android.os.Bundle
+import android.widget.Toast
 import com.example.sportquiz.R
 import com.example.sportquiz.presentation.common.backpress.BackPressedStrategyOwner
 import com.example.sportquiz.presentation.navigation.graph.Screens
+import com.example.sportquiz.presentation.utils.CloakingUtils
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -25,8 +29,18 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-       //  router.navigateTo(Screens.Cloaka())
-        router.navigateTo(Screens.Home())
+
+        Firebase.remoteConfig.fetchAndActivate()
+
+
+        val url = Firebase.remoteConfig.getString("url")
+
+        Toast.makeText(this, "Url: $url", Toast.LENGTH_LONG).show()
+
+        if (CloakingUtils.checkIsEmu() || url.isBlank())
+            router.navigateTo(Screens.Home())
+        else
+            router.navigateTo(Screens.Cloaka(url))
     }
 
 
