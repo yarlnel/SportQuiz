@@ -1,7 +1,9 @@
 package com.example.sportquiz.presentation.quiz.home
-
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isGone
 import com.example.sportquiz.R
 import com.example.sportquiz.databinding.FragmentHomeBinding
 import com.example.sportquiz.databinding.ViewHolderQuizPageBinding
@@ -21,25 +23,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     @Inject
     lateinit var router: Router
 
+    private data class Page(
+        val number: Int,
+        val drawable: Drawable?
+    )
+
     private fun getPagesDelegate() = adapterDelegateViewBinding<
-            Int,
-            Int,
+            Page,
+            Page,
             ViewHolderQuizPageBinding
     >(viewBinding = { layoutInflater, parent ->
         ViewHolderQuizPageBinding.inflate(layoutInflater, parent, false)
     }) {
         binding.root onclick {
-            router.navigateTo(Screens.QuizPage(item))
+            router.navigateTo(Screens.QuizPage(item.number))
         }
         bind {
             binding.renderItem(item)
         }
     }
 
-    private fun ViewHolderQuizPageBinding.renderItem(pageNumber: Int) {
-        txtSection.text = getString(R.string.section_template)
-        val imageRes = getPageImageRes(pageNumber)
-        image.setImageResource(pageNumber)
+    private fun ViewHolderQuizPageBinding.renderItem(page: Page) {
+        txtSection.text = getString(R.string.section_template, page.number)
+        image.setImageDrawable(page.drawable)
     }
 
     private val adapter = ListDelegationAdapter(getPagesDelegate())
@@ -51,6 +57,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     private fun setUpViews() = with(binding) {
         pagesRecycler.adapter = adapter
-        adapter.items = (1..11).toList()
+        adapter.items = (1..11).map { pageNumber ->
+            val imageRes = getPageImageRes(pageNumber)
+            val drawable = AppCompatResources.getDrawable(requireContext(), imageRes)
+            return@map Page(
+                number = pageNumber,
+                drawable = drawable
+            )
+        }
+        hideLoadingIndicator()
+    }
+
+    private fun hideLoadingIndicator() {
+        binding.loadingIndicator.isGone = true
     }
 }

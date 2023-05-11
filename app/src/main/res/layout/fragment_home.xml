@@ -12,4 +12,21 @@
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_holder_quiz_page" />
+
+    <FrameLayout
+        android:id="@+id/loadingIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="80dp"
+        android:visibility="visible"
+        android:background="@color/white"
+        tools:visibility="gone"
+        >
+        <ProgressBar
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:indeterminateTint="@color/salat"
+            android:layout_gravity="center"
+            android:visibility="visible"/>
+    </FrameLayout>
 </FrameLayout>

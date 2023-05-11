@@ -2,8 +2,9 @@ package com.example.sportquiz.presentation.quiz.page
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.annotation.IdRes
+import android.widget.Button
+import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import com.example.sportquiz.R
 import com.example.sportquiz.databinding.FragmentQuizPageBinding
 import com.example.sportquiz.model.Quiz
@@ -15,12 +16,10 @@ import com.example.sportquiz.source.QuizSource
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
     FragmentQuizPageBinding::inflate
@@ -30,11 +29,24 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
     override val coroutineContext = job + Dispatchers.IO
 
     private var page: Int = 0
-    private var currentQuiz: Int = 0
+    private var currentQuiz: Int = 1
     private var rightAnswersCount: Int = 0
     private val quizzes = mutableListOf<Quiz>()
+    private var haveMistakesOnThisQuestion: Boolean = false
 
+    private val btnBackgroundGreen by lazy {
+        ContextCompat.getDrawable(
+            requireContext(),
+            R.drawable.btn_background_shape
+        )
+    }
 
+    private val btnBackgroundRed by lazy {
+        ContextCompat.getDrawable(
+            requireContext(),
+            R.drawable.btn_background_shape_red
+        )
+    }
 
     @Inject
     lateinit var router: Router
@@ -51,11 +63,20 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
 
             withContext(Dispatchers.Main) {
                 quizzes.firstOrNull()?.let(::setUpQuizData)
+                hideLoadingIndicator()
             }
         }
     }
 
+    private fun hideLoadingIndicator() {
+        binding.loadingIndicator.isGone = true
+    }
+
     private fun setUpQuizData(quiz: Quiz) = with(binding) {
+        listOf(btnA, btnB, btnC, btnD).forEach { btn ->
+            btn.background = btnBackgroundGreen
+        }
+
         val imageRes = getPageImageRes(page)
         image.setImageResource(imageRes)
 
@@ -76,30 +97,31 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
         btnC.text = quiz.c
         btnD.text = quiz.d
 
-        val buttons = mapOf(
+        val answerToButtons = mapOf(
             Quiz.Answer.A to btnA,
             Quiz.Answer.B to btnB,
             Quiz.Answer.C to btnC,
             Quiz.Answer.D to btnD
         )
 
-        for ((answerType, btn) in buttons) {
+        for ((answerType, btn) in answerToButtons) {
             if (answerType == quiz.answer)
                 btn onclick ::onAnswerTrue
-            else
-                btn onclick ::onAnswerFalse
+            else btn onclick {
+                onAnswerFalse(btn)
+            }
         }
     }
 
     private fun onAnswerTrue() {
         currentQuiz++
-        rightAnswersCount++
+        if (!haveMistakesOnThisQuestion) rightAnswersCount++
         goToNextQuestion()
     }
 
-    private fun onAnswerFalse() {
-        Toast.makeText(requireContext(), "False", Toast.LENGTH_SHORT).show()
-        goToNextQuestion()
+    private fun onAnswerFalse(btn: Button) {
+        haveMistakesOnThisQuestion = true
+        btn.background = btnBackgroundRed
     }
 
     private fun goToNextQuestion() {
@@ -109,7 +131,9 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
                 quizPerPageCount = quizzes.size,
                 quizRightAnswerCount = rightAnswersCount
             ))
+            return
         }
+        haveMistakesOnThisQuestion = false
         setUpQuizData(quizzes[currentQuiz])
     }
 

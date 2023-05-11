@@ -42,6 +42,24 @@
             android:layout_gravity="start|top"
             />
 
+        <TextView
+            android:id="@+id/txtQuizNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            tools:text="2/10"
+            android:textColor="@color/section_title"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="@id/imageCard"
+            app:layout_constraintStart_toStartOf="@id/imageCard"
+            android:background="@drawable/white_box_shape"
+            android:layout_gravity="end|top
+"
+            />
+
 
     </androidx.cardview.widget.CardView>
 
@@ -52,8 +70,10 @@
         app:layout_constraintTop_toBottomOf="@id/imageCard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
         android:textStyle="bold"
         android:textSize="18sp"
+        android:textColor="@color/black"
         android:gravity="center"
         tools:text="@string/congratulations_title_template"
         />

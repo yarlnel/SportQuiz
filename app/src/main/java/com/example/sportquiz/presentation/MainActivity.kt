@@ -49,6 +49,8 @@ class MainActivity : DaggerAppCompatActivity() {
         val lastFragment = supportFragmentManager.fragments.lastOrNull()
         if (lastFragment is BackPressedStrategyOwner) {
             lastFragment.handleBackPress()
+        } else if (supportFragmentManager.fragments.size == 1) {
+            finish()
         } else {
             supportFragmentManager.popBackStack()
         }

@@ -1,14 +1,15 @@
 package com.example.sportquiz.presentation.quiz.congratulations
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import com.example.sportquiz.R
 import com.example.sportquiz.databinding.FragmentCongratulationsBinding
 import com.example.sportquiz.presentation.common.fragment.BaseFragment
 import com.example.sportquiz.presentation.navigation.graph.Screens
+import com.example.sportquiz.presentation.utils.getPageImageRes
 import com.example.sportquiz.presentation.utils.onclick
 import com.github.terrakok.cicerone.Router
-import com.github.terrakok.cicerone.Screen
 import javax.inject.Inject
 
 class CongratulationsFragment : BaseFragment<FragmentCongratulationsBinding>(
@@ -46,12 +47,28 @@ class CongratulationsFragment : BaseFragment<FragmentCongratulationsBinding>(
     }
 
     private fun setUpData() = with(binding) {
+        val imageRes = getPageImageRes(page)
+        image.setImageResource(imageRes)
+
         txtSection.text = getString(
             R.string.section_template,
             page
         )
+
+        txtQuizNumber.text = getString(
+            R.string.quiz_number_template,
+            quizRightAnswersCount,
+            quizPerPageCount
+        )
+
+        val title = if (quizRightAnswersCount > 5)
+            "Congratulations"
+        else
+            "Fail"
+
         txtTitle.text = getString(
             R.string.congratulations_title_template,
+            title,
             quizRightAnswersCount,
             quizPerPageCount
         )
