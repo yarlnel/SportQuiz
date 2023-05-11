@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="salat">#8BC34A</color>
+    <color name="green">#4CAF50</color>
+    <color name="section_title">#1F1F1F</color>
 </resources>

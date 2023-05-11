@@ -3,10 +3,12 @@ package com.example.sportquiz.presentation.quiz.page
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.IdRes
 import com.example.sportquiz.R
 import com.example.sportquiz.databinding.FragmentQuizPageBinding
 import com.example.sportquiz.model.Quiz
 import com.example.sportquiz.presentation.common.fragment.BaseFragment
+import com.example.sportquiz.presentation.utils.getPageImageRes
 import com.example.sportquiz.presentation.utils.onclick
 import com.example.sportquiz.source.QuizSource
 import kotlinx.coroutines.CoroutineScope
@@ -17,10 +19,10 @@ import kotlinx.coroutines.withContext
 class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
     FragmentQuizPageBinding::inflate
 ) {
-    var page: Int = 0
 
-    var currentQuiz: Int = 0
-    val quizzes = mutableListOf<Quiz>()
+    private var page: Int = 0
+    private var currentQuiz: Int = 0
+    private val quizzes = mutableListOf<Quiz>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +41,20 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
     }
 
     private fun setUpQuizData(quiz: Quiz) = with(binding) {
-        // TODO
-        image.setImageResource(R.drawable.img_for_quiz_page_2)
+        val imageRes = getPageImageRes(page)
+        image.setImageResource(imageRes)
+
+        txtQuizNumber.text = getString(
+            R.string.quiz_number_template,
+            currentQuiz,
+            quizzes.size
+        )
+
+        txtSection.text = getString(
+            R.string.section_template,
+            page
+        )
+
         txtTitle.text = quiz.title
         btnA.text = quiz.a
         btnB.text = quiz.b

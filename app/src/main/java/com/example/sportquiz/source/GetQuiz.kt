@@ -5,11 +5,7 @@ import org.jsoup.Jsoup
 
 object QuizSource {
     fun getQuizzes(page: Int): List<Quiz> {
-        if (page < 0 || page > 11) throw Exception(
-            """
-            Page out of quiz pages bounds
-        """.trimIndent()
-        )
+        if (page < 0 || page > 11) throw Exception(" Page out of quiz pages bounds")
 
         val quizPageUrl = getQuizPageUrl(page)
 
