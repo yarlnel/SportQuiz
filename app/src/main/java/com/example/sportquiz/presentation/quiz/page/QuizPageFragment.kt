@@ -113,6 +113,11 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
         setUpQuizData(quizzes[currentQuiz])
     }
 
+    override fun onStop() {
+        job.cancel()
+        super.onStop()
+    }
+
     object Arg {
         const val Page = "arg_page"
     }

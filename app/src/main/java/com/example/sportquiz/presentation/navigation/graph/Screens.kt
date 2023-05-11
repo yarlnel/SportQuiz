@@ -2,6 +2,7 @@ package com.example.sportquiz.presentation.navigation.graph
 
 import com.example.sportquiz.presentation.cloaka.CloakaFragment
 import com.example.sportquiz.presentation.quiz.congratulations.CongratulationsFragment
+import com.example.sportquiz.presentation.quiz.home.HomeFragment
 import com.example.sportquiz.presentation.quiz.page.QuizPageFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
@@ -25,5 +26,9 @@ object Screens {
             quizPerPageCount,
             quizRightAnswerCount
         )
+    }
+
+    fun Home() = FragmentScreen {
+        HomeFragment()
     }
 }

@@ -5,11 +5,19 @@ import android.view.View
 import com.example.sportquiz.R
 import com.example.sportquiz.databinding.FragmentCongratulationsBinding
 import com.example.sportquiz.presentation.common.fragment.BaseFragment
+import com.example.sportquiz.presentation.navigation.graph.Screens
 import com.example.sportquiz.presentation.utils.onclick
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.Screen
+import javax.inject.Inject
 
 class CongratulationsFragment : BaseFragment<FragmentCongratulationsBinding>(
     FragmentCongratulationsBinding::inflate
 ) {
+
+    @Inject
+    lateinit var router: Router
+
     private var page: Int = 0
     private var quizPerPageCount: Int = 0
     private var quizRightAnswersCount: Int = 0
@@ -30,7 +38,11 @@ class CongratulationsFragment : BaseFragment<FragmentCongratulationsBinding>(
     }
 
     private fun setUpClickListeners() = with(binding) {
-        btnHome onclick ::TODO
+        btnHome onclick ::navigateToHome
+    }
+
+    private fun navigateToHome() {
+        router.navigateTo(Screens.Home())
     }
 
     private fun setUpData() = with(binding) {

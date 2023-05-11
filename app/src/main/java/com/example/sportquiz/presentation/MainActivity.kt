@@ -22,19 +22,11 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private val navigator: Navigator = AppNavigator(this, R.id.main_root)
 
-    //    {
-//
-//        override fun applyCommands(commands: Array<out Command>) {
-//            super.applyCommands(commands)
-//            supportFragmentManager.executePendingTransactions()
-//        }
-//    }
-//
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
        //  router.navigateTo(Screens.Cloaka())
-        router.navigateTo(Screens.QuizPage(page = 1))
+        router.navigateTo(Screens.Home())
     }
 
 
