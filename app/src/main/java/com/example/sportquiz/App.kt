@@ -14,11 +14,15 @@ class App : DaggerApplication()  {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this@App)
+
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
+            minimumFetchIntervalInSeconds = 0
         }
-        Firebase.remoteConfig.setConfigSettingsAsync(configSettings)
-        Firebase.remoteConfig.fetchAndActivate()
+
+        with(Firebase.remoteConfig) {
+            setConfigSettingsAsync(configSettings)
+            fetchAndActivate()
+        }
     }
 
 
