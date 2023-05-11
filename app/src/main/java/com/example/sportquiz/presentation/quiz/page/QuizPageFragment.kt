@@ -8,21 +8,36 @@ import com.example.sportquiz.R
 import com.example.sportquiz.databinding.FragmentQuizPageBinding
 import com.example.sportquiz.model.Quiz
 import com.example.sportquiz.presentation.common.fragment.BaseFragment
+import com.example.sportquiz.presentation.navigation.graph.Screens
 import com.example.sportquiz.presentation.utils.getPageImageRes
 import com.example.sportquiz.presentation.utils.onclick
 import com.example.sportquiz.source.QuizSource
+import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
     FragmentQuizPageBinding::inflate
-) {
+), CoroutineScope {
+
+    private val job = SupervisorJob()
+    override val coroutineContext = job + Dispatchers.IO
 
     private var page: Int = 0
     private var currentQuiz: Int = 0
+    private var rightAnswersCount: Int = 0
     private val quizzes = mutableListOf<Quiz>()
+
+
+
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +46,7 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        CoroutineScope(Dispatchers.IO).launch {
+        launch {
             quizzes += QuizSource.getQuizzes(page)
 
             withContext(Dispatchers.Main) {
@@ -78,11 +93,24 @@ class QuizPageFragment : BaseFragment<FragmentQuizPageBinding>(
 
     private fun onAnswerTrue() {
         currentQuiz++
-        setUpQuizData(quizzes[currentQuiz])
+        rightAnswersCount++
+        goToNextQuestion()
     }
 
     private fun onAnswerFalse() {
         Toast.makeText(requireContext(), "False", Toast.LENGTH_SHORT).show()
+        goToNextQuestion()
+    }
+
+    private fun goToNextQuestion() {
+        if (currentQuiz == quizzes.lastIndex) {
+            router.navigateTo(Screens.Congratulations(
+                page = page,
+                quizPerPageCount = quizzes.size,
+                quizRightAnswerCount = rightAnswersCount
+            ))
+        }
+        setUpQuizData(quizzes[currentQuiz])
     }
 
     object Arg {
