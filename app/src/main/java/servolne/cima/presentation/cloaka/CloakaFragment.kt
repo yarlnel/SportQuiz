@@ -26,13 +26,31 @@ class CloakaFragment : BaseFragment<FragmentCloakaBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpWebView()
-        loadUrl(baseUrl)
+
+        if (savedInstanceState != null) {
+            restoreWebViewState(savedInstanceState)
+        }
+        else {
+            loadUrl(baseUrl)
+        }
+    }
+
+    private fun restoreWebViewState(bundle: Bundle) {
+        binding.webView.restoreState(bundle)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setUpWebView(): Unit = with(binding.webView) {
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.javaScriptEnabled = true
+        with(settings) {
+            javaScriptEnabled = true
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            domStorageEnabled = true
+            databaseEnabled = true
+            setSupportZoom(true)
+            allowFileAccess = true
+            allowContentAccess = true
+        }
         webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
