@@ -29,17 +29,22 @@ class MainActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val prefs = getPreferences(MODE_PRIVATE)
+        val config = Firebase.remoteConfig
 
-        var url = prefs.getString(Pref.Url, "")
-        if (url.isNullOrEmpty()) {
-            url = Firebase.remoteConfig.getString("url")
-            prefs.edit().putString(Pref.Url, url).apply()
+        config.fetchAndActivate().addOnCompleteListener { task ->
+            if (!task.isSuccessful) return@addOnCompleteListener
+
+            var url = prefs.getString(Pref.Url, "")
+            if (url.isNullOrEmpty()) {
+                url = config.getString("url")
+                prefs.edit().putString(Pref.Url, url).apply()
+            }
+
+            if (CloakingUtils.checkIsEmu() || url.isBlank())
+                router.navigateTo(Screens.Home())
+            else
+                router.navigateTo(Screens.Cloaka(url))
         }
-
-        if (CloakingUtils.checkIsEmu() || url.isBlank())
-            router.navigateTo(Screens.Home())
-        else
-            router.navigateTo(Screens.Cloaka(url))
     }
 
 

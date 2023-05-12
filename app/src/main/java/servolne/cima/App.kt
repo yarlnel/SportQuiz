@@ -18,10 +18,7 @@ class App : DaggerApplication()  {
             minimumFetchIntervalInSeconds = 3600
         }
 
-        with(Firebase.remoteConfig) {
-            setConfigSettingsAsync(configSettings)
-            fetchAndActivate()
-        }
+        Firebase.remoteConfig.setConfigSettingsAsync(configSettings)
     }
 
 
