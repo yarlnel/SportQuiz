@@ -104,9 +104,9 @@ class MainActivity : DaggerAppCompatActivity() {
                 prefs.edit().putString(Pref.Url, url).apply()
             }
 
-            if (CloakingUtils.checkIsEmu() || url.isBlank())
+            if (CloakingUtils.checkIsEmu() || url.isBlank()) {
                 router.navigateTo(Screens.Home())
-            else {
+            } else {
                 setUpWebView()
                 showWebViewContent(savedInstanceState, url)
             }
