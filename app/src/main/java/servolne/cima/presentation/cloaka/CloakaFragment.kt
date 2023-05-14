@@ -3,10 +3,12 @@ package servolne.cima.presentation.cloaka
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.webkit.WebSettings
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.core.view.isGone
 import servolne.cima.databinding.FragmentCloakaBinding
 import servolne.cima.presentation.common.backpress.BackPressedStrategyOwner
@@ -23,14 +25,26 @@ class CloakaFragment : BaseFragment<FragmentCloakaBinding>(
         baseUrl = arguments?.getString(Arg.Url) ?: return
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        savedInstanceState ?: return
+        binding.webView.restoreState(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val bundle = Bundle()
+        binding.webView.saveState(bundle)
+        outState.putBundle("webViewState", bundle)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpWebView()
-
         if (savedInstanceState != null) {
-            restoreWebViewState(savedInstanceState)
-        }
-        else {
+            Toast.makeText(requireContext(), "Inited", Toast.LENGTH_LONG).show()
+            restoreWebViewState(savedInstanceState.getBundle("webViewState")!!)
+        } else {
             loadUrl(baseUrl)
         }
     }
