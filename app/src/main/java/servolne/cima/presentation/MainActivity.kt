@@ -49,8 +49,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private val navigator: Navigator = AppNavigator(this, R.id.main_root)
 
-    private var uploadMessage: ValueCallback<Uri?>? = null
-    private var capturedImageURI: Uri? = null
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
     private var cameraPhotoPath: String? = null
 
@@ -234,14 +232,15 @@ class MainActivity : DaggerAppCompatActivity() {
     fun ultimateOnBackPressed() = super.onBackPressed()
 
     override fun onBackPressed() {
-        if (supportFragmentManager.fragments.isEmpty())
-            super.onBackPressed()
+        if (supportFragmentManager.fragments.isEmpty()) with(binding.webView) {
+            if (canGoBack()) goBack()
+            else ultimateOnBackPressed()
+            return
+        }
 
         val lastFragment = supportFragmentManager.fragments.lastOrNull()
         if (lastFragment is BackPressedStrategyOwner) {
             lastFragment.handleBackPress()
-        } else if (supportFragmentManager.fragments.size == 1) {
-            finish()
         } else {
             supportFragmentManager.popBackStack()
         }
@@ -249,7 +248,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private object Constants {
         const val InputFileRequestCode = 1
-        const val FileChooserResultCode = 1
     }
 
     private object Pref {

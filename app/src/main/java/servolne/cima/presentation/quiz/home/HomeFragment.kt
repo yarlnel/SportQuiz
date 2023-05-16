@@ -14,12 +14,13 @@ import servolne.cima.presentation.utils.onclick
 import com.github.terrakok.cicerone.Router
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
+import servolne.cima.presentation.common.backpress.BackPressedStrategyOwner
 import servolne.cima.presentation.navigation.graph.Screens
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
-) {
+), BackPressedStrategyOwner {
 
     @Inject
     lateinit var router: Router
@@ -71,5 +72,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     private fun hideLoadingIndicator() {
         binding.loadingIndicator.isGone = true
+    }
+
+    override fun handleBackPress() {
+        requireActivity().finish()
     }
 }
